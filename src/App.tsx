@@ -14,8 +14,10 @@ type OO = {
 const sketch: Sketch = (p5) => {
     let oos: OO[] = [];
     let text = "おお";
+    let limit = 30;
     p5.updateWithProps = (props) => {
         text = props.text as string;
+        limit = props.limit as number;
     };
     p5.setup = () => {
         p5.createCanvas(1200, 600);
@@ -23,7 +25,7 @@ const sketch: Sketch = (p5) => {
     p5.draw = () => {
         p5.background(255, 50);
         p5.fill(0);
-        if (oos.length < 30) {
+        if (oos.length < limit) {
             oos.push({
                 x: p5.random(p5.width),
                 y: p5.random(p5.height),
@@ -46,6 +48,7 @@ const sketch: Sketch = (p5) => {
 
 export default function App() {
     const [text, setText] = useState("おお");
+    const [limit, setLimit] = useState(30);
     return (
         <>
             <input
@@ -54,7 +57,14 @@ export default function App() {
                 onChange={(e) => setText(e.currentTarget.value)}
                 placeholder="おお"
             />
-            <ReactP5Wrapper sketch={sketch} text={text} />
+            <input
+                type="number"
+                value={limit}
+                onChange={(e) =>
+                    setLimit(Number.parseInt(e.currentTarget.value))
+                }
+            />
+            <ReactP5Wrapper sketch={sketch} text={text} limit={limit} />
         </>
     );
 }
